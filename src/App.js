@@ -12,7 +12,6 @@ const App = ({ trades, activeCorp, corporations, handleInit, handleActive }) => 
   useEffect(() => {
     handleInit()
   }, [handleInit])
-  console.log(window)
   return (
     <div className="App">
       <h1>TDAM DEMO</h1>
