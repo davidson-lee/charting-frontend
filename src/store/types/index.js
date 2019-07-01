@@ -1,0 +1,5 @@
+export const DATA_TYPES = {
+    SET_CORP: 'SET_CORP',
+    SET_ACTIVE: 'SET_ACTIVE',
+    SET_TRADES: 'SET_TRADES'
+}
