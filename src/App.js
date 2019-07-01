@@ -12,14 +12,17 @@ const App = ({ trades, activeCorp, corporations, handleInit, handleActive }) => 
   useEffect(() => {
     handleInit()
   }, [handleInit])
+  console.log(window)
   return (
     <div className="App">
-      <h1>TDAM Demo</h1>
-      <h3>A quick demo of React/Redux frontend, 
+      <h1>TDAM DEMO</h1>
+      <h3>
+        A quick demo of React/Redux frontend, 
         <br />Django/PostgreSQL/GraphQL backend,
-        <br />hosted on AWS ft. Chart.js</h3>
+        <br />hosted on AWS ft. Chart.js
+      </h3>
       { trades && activeCorp ? 
-      <div style={{width: '80vw', display: 'flex', flexFlow: 'column nowrap', alignItems: 'center'}}>
+      <div style={{width: '90%', maxWidth: `${window.screen.availWidth * 0.6}px`, display: 'flex', flexFlow: 'column nowrap', alignItems: 'center'}}>
         <div className='menu'>
           <h2>{activeCorp.ticker} - {activeCorp.name}</h2>
           <div 
@@ -44,20 +47,50 @@ const App = ({ trades, activeCorp, corporations, handleInit, handleActive }) => 
         <Line
           data={{
             labels: trades.map(e => {
-              return e.time
+              return `Period ${e.time}`
             }),
             datasets: [{
-                label: 'Performance',
                 data: trades.map(e => {return e.price}),
-                backgroundColor: 'rgba(100, 100, 255, 0.15)',
-                borderColor: 'rgba(100, 100, 255, 1)',
+                fill: false,
+                borderColor: 'rgba(50, 80, 50, 1)',
                 borderWidth: 1,
+                tension: 0
             }]
           }}
-          width={100}
+          options={{
+            tooltips: {
+              enabled: true,
+              callbacks: {
+                label: (item, data) => {
+                  return `Price: $${item.value}`
+                }
+              }
+            },
+            legend: {
+              display: false
+            },
+            scales: {
+              xAxes: [{
+                type: 'category',
+                labels: trades.map(e => {
+                  return `Period ${e.time}`
+                })
+              }],
+              yAxes: [{
+                type: 'linear',
+                ticks: {
+                  callback: (value) => {
+                    return `$${Number(Math.round(parseFloat(value + 'e' + 2)) + 'e-' + 2)}0`
+                  }
+                }
+              }]
+            },
+            maintainAspectRatio: true
+          }}
+          width={80}
           height={30}
           />
-        <h3>{activeCorp.description}</h3>
+        <h3 style={{marginTop: '2em'}}><strong>Description: </strong>{activeCorp.description}</h3>
       </div>
       : null}
       <h4>Developed by Davidson Lee</h4>
